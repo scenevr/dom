@@ -1,7 +1,6 @@
 var fs = require('fs');
 var _ = require('underscore');
 var vm = require('vm');
-var Env = require('../lib/env');
 var Element = require('./element');
 var Node = require('../lib/node');
 var Vector = require('../lib/vector');
@@ -9,7 +8,6 @@ var Euler = require('../lib/euler');
 var path = require('path');
 var XMLHttpRequest = require('xhr2');
 var util = require('util');
-var Scene;
 
 function Scene () {
   Node.call(this, 'scene');
@@ -38,12 +36,12 @@ Scene.prototype.clearTimeouts = function () {
   return null;
 };
 
-Scene.prototype.ticksPerSecond = Env.getTickHertz();
-
-Scene.prototype.start = function (reflector) {
+Scene.prototype.start = function (reflector, ticksPerSecond) {
   var document = this.ownerDocument;
   var timeouts = [];
   var intervals = [];
+
+  this.ticksPerSecond = ticksPerSecond || 5;
 
   this.clearTimeouts = function () {
     timeouts.forEach(function (t) {
@@ -141,6 +139,8 @@ Scene.prototype.start = function (reflector) {
 };
 
 Scene.load = function (filename, callback) {
+  console.log(Document);
+
   var document = Document.createDocument();
 
   // fixme: gross
