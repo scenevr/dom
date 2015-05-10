@@ -1,6 +1,5 @@
 var test = require('tape');
 var Node = require('../lib/node');
-var HTMLElement = require('../lib/dom-lite').HTMLElement;
 var Document = require('../lib/document');
 var ownerDocument = Document.createDocument();
 
@@ -47,15 +46,5 @@ test('should ignore underscored attributes', function (t) {
     }
   };
   t.ok(n.innerXML.match(/<box uuid\S+ position="1 2 3"><.box>/));
-  t.end();
-});
-
-test('should parse packets', function (t) {
-  var n = Node.packetParser('<packet><event name=\'boop\' /><player position=\'1 2 3\' /></packet>');
-  t.ok(n instanceof HTMLElement);
-  t.equal(n.nodeName, 'packet');
-  t.equal(n.childNodes.length, 2);
-  t.equal(n.firstChild.nodeName, 'event');
-  t.equal(n.firstChild.getAttribute('name'), 'boop');
   t.end();
 });
