@@ -139,8 +139,6 @@ Scene.prototype.start = function (reflector, ticksPerSecond) {
 };
 
 Scene.load = function (filename, callback) {
-  console.log(Document);
-
   var document = Document.createDocument();
 
   // fixme: gross
