@@ -137,32 +137,3 @@ Scene.prototype.start = function (reflector, ticksPerSecond) {
     console.log('  ' + e.stack.split('\n').slice(0, 2).join('\n  '));
   }
 };
-
-Scene.load = function (filename, callback) {
-  var document = Document.createDocument();
-
-  // fixme: gross
-  var parsedScene = new Element('null');
-  parsedScene.ownerDocument = document;
-
-  if (filename.match(/</)) {
-    parsedScene.innerXML = filename;
-  } else {
-    parsedScene.innerXML = fs.readFileSync(filename).toString();
-  }
-
-  parsedScene.childNodes.forEach(function (node) {
-    if (node instanceof Scene) {
-      document.scene = node;
-    }
-  });
-
-  if (!document.scene) {
-    console.log("[server] Couldn't find a <scene /> element in " + filename);
-    return;
-  }
-
-  document.filename = filename;
-
-  callback(document.scene);
-};
