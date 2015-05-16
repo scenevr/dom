@@ -17,6 +17,9 @@ test('Document', function (t) {
     t.ok(box.uuid, 'New element has a UUID');
     t.equals(box, doc.getElementByUUID(box.uuid), 'document.getElementByUUID() returns correct object');
 
+    box.uuid = '5';
+    t.equals(box, doc.getElementByUUID(5), 'document.getElementByUUID() works after a manual UUID update');
+
     t.end();
   });
 
