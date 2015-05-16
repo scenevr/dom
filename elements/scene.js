@@ -1,7 +1,6 @@
 var fs = require('fs');
 var _ = require('underscore');
 var vm = require('vm');
-var Element = require('./element');
 var Node = require('../lib/node');
 var Vector = require('../lib/vector');
 var Euler = require('../lib/euler');
@@ -16,8 +15,6 @@ function Scene () {
 util.inherits(Scene, Node);
 
 module.exports = Scene;
-
-var Document = require('../lib/document');
 
 Scene.prototype.stop = function () {
   this.clearTimeouts();
@@ -136,4 +133,18 @@ Scene.prototype.start = function (reflector, ticksPerSecond) {
     console.log('[server] ' + document.filename);
     console.log('  ' + e.stack.split('\n').slice(0, 2).join('\n  '));
   }
+};
+
+/**
+ * Deprecated: use SceneDOM.createDocumentFromXML() instead
+ */
+Scene.load = function (filename, callback) {
+  fs.readFile(filename, 'utf8', function (err, xml) {
+    if (!err) {
+      var document = require('../').createDocumentFromXML(xml);
+      callback(document.scene);
+    } else {
+      throw new Error(err);
+    }
+  });
 };
