@@ -38,6 +38,11 @@ This is a simple usage example:
 	`document.load(filename)`: Load a scene from an XML file
 	`document.createElement(tagName)`: Create a new SceneDOM element
 
+### Element lookup
+
+	`document.getElementByID(id)`: Get an element by HTML ID
+	`document.getElementByUUID(uuid)`: Get an element by UUID, used for syncing elements between client/server
+
 ### Element types
 
 SceneDOM comes with the following elements:
