@@ -5,6 +5,8 @@ var Euler = require('./forks/euler');
 
 module.exports = {
   createDocument: Document.createDocument,
+  setLoader: Document.setLoader,
+
   Document: Document,
   Scene: Scene,
   Vector: Vector,

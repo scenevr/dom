@@ -1,7 +1,6 @@
 var fs = require('fs');
 var _ = require('underscore');
 var vm = require('vm');
-var Element = require('./element');
 var Node = require('../lib/node');
 var Vector = require('../lib/vector');
 var Euler = require('../lib/euler');
@@ -16,8 +15,6 @@ function Scene () {
 util.inherits(Scene, Node);
 
 module.exports = Scene;
-
-var Document = require('../lib/document');
 
 Scene.prototype.stop = function () {
   this.clearTimeouts();
@@ -138,31 +135,16 @@ Scene.prototype.start = function (reflector, ticksPerSecond) {
   }
 };
 
+/**
+ * Deprecated: use SceneDOM.createDocumentFromXML() instead
+ */
 Scene.load = function (filename, callback) {
-  var document = Document.createDocument();
-
-  // fixme: gross
-  var parsedScene = new Element('null');
-  parsedScene.ownerDocument = document;
-
-  if (filename.match(/</)) {
-    parsedScene.innerXML = filename;
-  } else {
-    parsedScene.innerXML = fs.readFileSync(filename).toString();
-  }
-
-  parsedScene.childNodes.forEach(function (node) {
-    if (node instanceof Scene) {
-      document.scene = node;
+  fs.readFile(filename, 'utf8', function (err, xml) {
+    if (!err) {
+      var document = require('../').createDocument().loadXML(xml);
+      callback(document.scene);
+    } else {
+      throw new Error(err);
     }
   });
-
-  if (!document.scene) {
-    console.log("[server] Couldn't find a <scene /> element in " + filename);
-    return;
-  }
-
-  document.filename = filename;
-
-  callback(document.scene);
 };
