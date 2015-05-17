@@ -1,6 +1,5 @@
 var test = require('tape');
-var fs = require('fs');
-var SceneDOM = require('../');
+var SceneDOM = require('../').setLoader(require('../lib/document-fs-loader'));
 var Scene = require('../elements/scene');
 var Script = require('../elements/script');
 var Box = require('../elements/box');
@@ -12,6 +11,14 @@ var Skybox = require('../elements/skybox');
 var Fog = require('../elements/fog');
 var Audio = require('../elements/audio');
 
+// Small helper function to load fixtures
+function sceneFixtureLoader (fixtureFilename) {
+  var doc = SceneDOM.createDocument();
+  doc.async = false;
+  doc.load(process.cwd() + '/test/fixtures/' + fixtureFilename);
+  return doc.scene;
+}
+
 test('should create', function (t) {
   var s;
   s = new Scene();
@@ -22,8 +29,7 @@ test('should create', function (t) {
 
 test('scene', function (t) {
   t.test('should load scene', function (t) {
-    var xml = fs.readFileSync(process.cwd() + '/test/fixtures/hello.xml').toString();
-    var scene = SceneDOM.createDocumentFromXML(xml).scene;
+    var scene = sceneFixtureLoader('hello.xml');
 
     t.equal(scene.childNodes.length, 7);
 
@@ -37,8 +43,7 @@ test('scene', function (t) {
   });
 
   t.test('should load scene with <script /> tags', function (t) {
-    var xml = fs.readFileSync(process.cwd() + '/test/fixtures/script_tag.xml').toString();
-    var scene = SceneDOM.createDocumentFromXML(xml).scene;
+    var scene = sceneFixtureLoader('script_tag.xml');
 
     t.equal(scene.childNodes.length, 5);
 
@@ -51,8 +56,7 @@ test('scene', function (t) {
 
 test('all_tags', function (t) {
   t.test('should load', function (t) {
-    var xml = fs.readFileSync(process.cwd() + '/test/fixtures/all_tags.xml').toString();
-    var scene = SceneDOM.createDocumentFromXML(xml).scene;
+    var scene = sceneFixtureLoader('all_tags.xml');
 
     t.ok(scene.childNodes.length > 3);
     t.ok(scene instanceof Scene);
@@ -60,8 +64,7 @@ test('all_tags', function (t) {
   });
 
   t.test('should parse spawn', function (t) {
-    var xml = fs.readFileSync(process.cwd() + '/test/fixtures/all_tags.xml').toString();
-    var scene = SceneDOM.createDocumentFromXML(xml).scene;
+    var scene = sceneFixtureLoader('all_tags.xml');
 
     t.equal(scene.getElementsByTagName('spawn').length, 1);
     t.ok(scene.getElementsByTagName('spawn')[0] instanceof Spawn);
@@ -69,8 +72,7 @@ test('all_tags', function (t) {
   });
 
   t.test('should parse billboard', function (t) {
-    var xml = fs.readFileSync(process.cwd() + '/test/fixtures/all_tags.xml').toString();
-    var scene = SceneDOM.createDocumentFromXML(xml).scene;
+    var scene = sceneFixtureLoader('all_tags.xml');
 
     t.equal(scene.getElementsByTagName('billboard').length, 1);
     t.ok(scene.getElementsByTagName('billboard')[0].innerHTML.match(/<h1>Welcome/));
@@ -80,8 +82,7 @@ test('all_tags', function (t) {
   });
 
   t.test('should parse model', function (t) {
-    var xml = fs.readFileSync(process.cwd() + '/test/fixtures/all_tags.xml').toString();
-    var scene = SceneDOM.createDocumentFromXML(xml).scene;
+    var scene = sceneFixtureLoader('all_tags.xml');
 
     t.equal(scene.getElementsByTagName('model').length, 1);
     t.ok(scene.getElementsByTagName('model')[0].src.match(/blah.obj/));
@@ -90,8 +91,7 @@ test('all_tags', function (t) {
   });
 
   t.test('should parse link', function (t) {
-    var xml = fs.readFileSync(process.cwd() + '/test/fixtures/all_tags.xml').toString();
-    var scene = SceneDOM.createDocumentFromXML(xml).scene;
+    var scene = sceneFixtureLoader('all_tags.xml');
 
     t.equal(scene.getElementsByTagName('link').length, 1);
     t.ok(scene.getElementsByTagName('link')[0].href.match(/test/));
@@ -100,8 +100,7 @@ test('all_tags', function (t) {
   });
 
   t.test('should parse skybox', function (t) {
-    var xml = fs.readFileSync(process.cwd() + '/test/fixtures/all_tags.xml').toString();
-    var scene = SceneDOM.createDocumentFromXML(xml).scene;
+    var scene = sceneFixtureLoader('all_tags.xml');
 
     t.equal(scene.getElementsByTagName('skybox').length, 1);
     t.ok(scene.getElementsByTagName('skybox')[0].src.match(/blah/));
@@ -110,8 +109,7 @@ test('all_tags', function (t) {
   });
 
   t.test('should parse audio', function (t) {
-    var xml = fs.readFileSync(process.cwd() + '/test/fixtures/all_tags.xml').toString();
-    var scene = SceneDOM.createDocumentFromXML(xml).scene;
+    var scene = sceneFixtureLoader('all_tags.xml');
 
     t.equal(scene.getElementsByTagName('audio').length, 1);
     t.ok(scene.getElementsByTagName('audio')[0].src.match(/drone/));
@@ -120,8 +118,7 @@ test('all_tags', function (t) {
   });
 
   t.test('should parse fog', function (t) {
-    var xml = fs.readFileSync(process.cwd() + '/test/fixtures/all_tags.xml').toString();
-    var scene = SceneDOM.createDocumentFromXML(xml).scene;
+    var scene = sceneFixtureLoader('all_tags.xml');
 
     t.equal(scene.getElementsByTagName('fog').length, 1);
     t.ok(scene.getElementsByTagName('fog')[0].style.color.match('#fff'));
@@ -131,8 +128,7 @@ test('all_tags', function (t) {
   });
 
   t.test('should parse plane', function (t) {
-    var xml = fs.readFileSync(process.cwd() + '/test/fixtures/all_tags.xml').toString();
-    var scene = SceneDOM.createDocumentFromXML(xml).scene;
+    var scene = sceneFixtureLoader('all_tags.xml');
 
     t.equal(scene.getElementsByTagName('plane').length, 1);
     t.ok(scene.getElementsByTagName('plane')[0].style.textureMap.match('url'));

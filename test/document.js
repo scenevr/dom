@@ -32,5 +32,26 @@ test('Document', function (t) {
     t.end();
   });
 
+  t.test('document.load() works in asynchronously', function (t) {
+    SceneDOM.setLoader(require('../lib/document-fs-loader'));
+
+    t.plan(2);
+    var doc = SceneDOM.createDocument();
+    doc.addEventListener('load', function (e) {
+      t.equals(e.target.getElementById('two').tagName, 'box', 'document content loaded successfully');
+      t.pass('load event callback called');
+      t.end();
+    });
+    doc.load(process.cwd() + '/test/fixtures/hello.xml');
+  });
+
+  t.test('document.load() works in synchronously', function (t) {
+    var doc = SceneDOM.createDocument();
+    doc.async = false;
+    doc.load(process.cwd() + '/test/fixtures/hello.xml');
+    t.equals(doc.getElementById('two').tagName, 'box', 'document content loaded successfully');
+    t.end();
+  });
+
   t.end();
 });
