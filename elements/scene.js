@@ -109,6 +109,12 @@ Scene.prototype.start = function (reflector, ticksPerSecond) {
 
       if (fullPath.indexOf(base) !== 0) {
         console.log('[server] Unable to find script ' + scriptElement.src);
+        return;
+      }
+
+      if (!fs.existsSync(fullPath)) {
+        console.log('[server] Unable to find script ' + scriptElement.src);
+        return;
       }
 
       code = fs.readFileSync(fullPath);

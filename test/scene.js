@@ -60,6 +60,14 @@ test('should load external scripts', function (t) {
   t.end();
 });
 
+test('should not explode on missing scripts', function (t) {
+  var scene = sceneFixtureLoader('missing-file.xml');
+  scene.start();
+  t.same(scene.getAttribute('testloaded'), 'true');
+  scene.stop();
+  t.end();
+});
+
 test('should load', function (t) {
   var scene = sceneFixtureLoader('all_tags.xml');
 
