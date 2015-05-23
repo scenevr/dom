@@ -27,112 +27,116 @@ test('should create', function (t) {
   t.end();
 });
 
-test('scene', function (t) {
-  t.test('should load scene', function (t) {
-    var scene = sceneFixtureLoader('hello.xml');
+test('should load scene', function (t) {
+  var scene = sceneFixtureLoader('hello.xml');
 
-    t.equal(scene.childNodes.length, 7);
+  t.equal(scene.childNodes.length, 7);
 
-    var box = scene.childNodes[1];
-    t.ok(box instanceof Box);
-    t.equal(box.position.y, 10.0);
+  var box = scene.childNodes[1];
+  t.ok(box instanceof Box);
+  t.equal(box.position.y, 10.0);
 
-    var script = scene.childNodes[5];
-    t.ok(script instanceof Script);
-    t.end();
-  });
-
-  t.test('should load scene with <script /> tags', function (t) {
-    var scene = sceneFixtureLoader('script_tag.xml');
-
-    t.equal(scene.childNodes.length, 5);
-
-    var script = scene.childNodes[3];
-    t.ok(script instanceof Script);
-    t.ok(script.textContent.match(/10 < 20/));
-    t.end();
-  });
+  var script = scene.childNodes[5];
+  t.ok(script instanceof Script);
+  t.end();
 });
 
-test('all_tags', function (t) {
-  t.test('should load', function (t) {
-    var scene = sceneFixtureLoader('all_tags.xml');
+test('should load scene with <script /> tags', function (t) {
+  var scene = sceneFixtureLoader('script_tag.xml');
 
-    t.ok(scene.childNodes.length > 3);
-    t.ok(scene instanceof Scene);
-    t.end();
-  });
+  t.equal(scene.childNodes.length, 11);
 
-  t.test('should parse spawn', function (t) {
-    var scene = sceneFixtureLoader('all_tags.xml');
+  var script = scene.childNodes[3];
+  t.ok(script instanceof Script);
+  t.ok(script.textContent.match(/10 < 20/));
+  t.end();
+});
 
-    t.equal(scene.getElementsByTagName('spawn').length, 1);
-    t.ok(scene.getElementsByTagName('spawn')[0] instanceof Spawn);
-    t.end();
-  });
+test('should load external scripts', function (t) {
+  var scene = sceneFixtureLoader('script_tag.xml');
+  scene.start();
+  t.same(scene.getAttribute('testloaded'), '4');
+  scene.stop();
+  t.end();
+});
 
-  t.test('should parse billboard', function (t) {
-    var scene = sceneFixtureLoader('all_tags.xml');
+test('should load', function (t) {
+  var scene = sceneFixtureLoader('all_tags.xml');
 
-    t.equal(scene.getElementsByTagName('billboard').length, 1);
-    t.ok(scene.getElementsByTagName('billboard')[0].innerHTML.match(/<h1>Welcome/));
-    t.ok(scene.getElementsByTagName('billboard')[0].innerHTML.match(/<!\[CDATA\[/));
-    t.ok(scene.getElementsByTagName('billboard')[0].innerHTML.match(/stuff and things/));
-    t.end();
-  });
+  t.ok(scene.childNodes.length > 3);
+  t.ok(scene instanceof Scene);
+  t.end();
+});
 
-  t.test('should parse model', function (t) {
-    var scene = sceneFixtureLoader('all_tags.xml');
+test('should parse spawn', function (t) {
+  var scene = sceneFixtureLoader('all_tags.xml');
 
-    t.equal(scene.getElementsByTagName('model').length, 1);
-    t.ok(scene.getElementsByTagName('model')[0].src.match(/blah.obj/));
-    t.ok(scene.getElementsByTagName('model')[0] instanceof Model);
-    t.end();
-  });
+  t.equal(scene.getElementsByTagName('spawn').length, 1);
+  t.ok(scene.getElementsByTagName('spawn')[0] instanceof Spawn);
+  t.end();
+});
 
-  t.test('should parse link', function (t) {
-    var scene = sceneFixtureLoader('all_tags.xml');
+test('should parse billboard', function (t) {
+  var scene = sceneFixtureLoader('all_tags.xml');
 
-    t.equal(scene.getElementsByTagName('link').length, 1);
-    t.ok(scene.getElementsByTagName('link')[0].href.match(/test/));
-    t.ok(scene.getElementsByTagName('link')[0] instanceof Link);
-    t.end();
-  });
+  t.equal(scene.getElementsByTagName('billboard').length, 1);
+  t.ok(scene.getElementsByTagName('billboard')[0].innerHTML.match(/<h1>Welcome/));
+  t.ok(scene.getElementsByTagName('billboard')[0].innerHTML.match(/<!\[CDATA\[/));
+  t.ok(scene.getElementsByTagName('billboard')[0].innerHTML.match(/stuff and things/));
+  t.end();
+});
 
-  t.test('should parse skybox', function (t) {
-    var scene = sceneFixtureLoader('all_tags.xml');
+test('should parse model', function (t) {
+  var scene = sceneFixtureLoader('all_tags.xml');
 
-    t.equal(scene.getElementsByTagName('skybox').length, 1);
-    t.ok(scene.getElementsByTagName('skybox')[0].src.match(/blah/));
-    t.ok(scene.getElementsByTagName('skybox')[0] instanceof Skybox);
-    t.end();
-  });
+  t.equal(scene.getElementsByTagName('model').length, 1);
+  t.ok(scene.getElementsByTagName('model')[0].src.match(/blah.obj/));
+  t.ok(scene.getElementsByTagName('model')[0] instanceof Model);
+  t.end();
+});
 
-  t.test('should parse audio', function (t) {
-    var scene = sceneFixtureLoader('all_tags.xml');
+test('should parse link', function (t) {
+  var scene = sceneFixtureLoader('all_tags.xml');
 
-    t.equal(scene.getElementsByTagName('audio').length, 1);
-    t.ok(scene.getElementsByTagName('audio')[0].src.match(/drone/));
-    t.ok(scene.getElementsByTagName('audio')[0] instanceof Audio);
-    t.end();
-  });
+  t.equal(scene.getElementsByTagName('link').length, 1);
+  t.ok(scene.getElementsByTagName('link')[0].href.match(/test/));
+  t.ok(scene.getElementsByTagName('link')[0] instanceof Link);
+  t.end();
+});
 
-  t.test('should parse fog', function (t) {
-    var scene = sceneFixtureLoader('all_tags.xml');
+test('should parse skybox', function (t) {
+  var scene = sceneFixtureLoader('all_tags.xml');
 
-    t.equal(scene.getElementsByTagName('fog').length, 1);
-    t.ok(scene.getElementsByTagName('fog')[0].style.color.match('#fff'));
-    t.ok(scene.getElementsByTagName('fog')[0].near.match('100'));
-    t.ok(scene.getElementsByTagName('fog')[0] instanceof Fog);
-    t.end();
-  });
+  t.equal(scene.getElementsByTagName('skybox').length, 1);
+  t.ok(scene.getElementsByTagName('skybox')[0].src.match(/blah/));
+  t.ok(scene.getElementsByTagName('skybox')[0] instanceof Skybox);
+  t.end();
+});
 
-  t.test('should parse plane', function (t) {
-    var scene = sceneFixtureLoader('all_tags.xml');
+test('should parse audio', function (t) {
+  var scene = sceneFixtureLoader('all_tags.xml');
 
-    t.equal(scene.getElementsByTagName('plane').length, 1);
-    t.ok(scene.getElementsByTagName('plane')[0].style.textureMap.match('url'));
-    t.ok(scene.getElementsByTagName('plane')[0] instanceof Plane);
-    t.end();
-  });
+  t.equal(scene.getElementsByTagName('audio').length, 1);
+  t.ok(scene.getElementsByTagName('audio')[0].src.match(/drone/));
+  t.ok(scene.getElementsByTagName('audio')[0] instanceof Audio);
+  t.end();
+});
+
+test('should parse fog', function (t) {
+  var scene = sceneFixtureLoader('all_tags.xml');
+
+  t.equal(scene.getElementsByTagName('fog').length, 1);
+  t.ok(scene.getElementsByTagName('fog')[0].style.color.match('#fff'));
+  t.ok(scene.getElementsByTagName('fog')[0].near.match('100'));
+  t.ok(scene.getElementsByTagName('fog')[0] instanceof Fog);
+  t.end();
+});
+
+test('should parse plane', function (t) {
+  var scene = sceneFixtureLoader('all_tags.xml');
+
+  t.equal(scene.getElementsByTagName('plane').length, 1);
+  t.ok(scene.getElementsByTagName('plane')[0].style.textureMap.match('url'));
+  t.ok(scene.getElementsByTagName('plane')[0] instanceof Plane);
+  t.end();
 });

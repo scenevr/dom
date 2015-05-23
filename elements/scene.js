@@ -104,7 +104,14 @@ Scene.prototype.start = function (reflector, ticksPerSecond) {
       });
 
     if (scriptElement.src) {
-      code = fs.readFileSync(path.resolve(path.dirname(document.filename), scriptElement.src));
+      var base = path.dirname(document.originalFilename);
+      var fullPath = path.resolve(base, './' + scriptElement.src);
+
+      if (fullPath.indexOf(base) !== 0) {
+        console.log('[server] Unable to find script ' + scriptElement.src);
+      }
+
+      code = fs.readFileSync(fullPath);
     } else if (cdata) {
       code = cdata.data;
     } else {
