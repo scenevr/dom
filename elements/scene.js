@@ -108,7 +108,7 @@ Scene.prototype.start = function (reflector, ticksPerSecond) {
       var fullPath = path.resolve(base, './' + scriptElement.src);
 
       if (fullPath.indexOf(base) !== 0) {
-        console.log('[server] Unable to find script ' + scriptElement.src);
+        console.log('[server] Invalid path to script: ' + scriptElement.src);
         return;
       }
 
