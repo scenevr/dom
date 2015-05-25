@@ -138,7 +138,7 @@ Node.prototype = {
     Object.observe(this, this.markAsDirty.bind(this));
   },
   markAsDirty: function(){
-    if(this.reflect){
+    if (this.uuid && this.ownerDocument) {
       this.ownerDocument.markAsDirty(this);
     }
   },
@@ -164,6 +164,10 @@ Node.prototype = {
 
     // more gross hacks
     if(this.nodeName === "scene"){
+      if (!el.uuid && el.createUUID) {
+        el.createUUID();
+      }
+
       el.markAsDirty();
     }else{
       this.markAsDirty();
@@ -211,6 +215,9 @@ Node.prototype = {
         return child.cloneNode(deep)
       })
     }
+
+    delete node._uuid;
+
     return node
   },
   toString: function() {
