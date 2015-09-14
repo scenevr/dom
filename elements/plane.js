@@ -1,6 +1,5 @@
 var util = require('util');
 var SpatialElement = require('./spatial-element');
-var Plane;
 
 function Plane () {
   SpatialElement.call(this, 'plane');

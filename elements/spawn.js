@@ -1,6 +1,5 @@
 var util = require('util');
 var Element = require('./element');
-var Spawn;
 
 function Spawn () {
   Element.call(this, 'spawn');

@@ -25,7 +25,7 @@
     "tape": "^3.5.0"
   },
   "scripts": {
-    "test": "semistandard && tape test/*.js"
+    "test": "tape test/*.js && semistandard"
   },
   "semistandard": {
     "ignore": "forks/**"
