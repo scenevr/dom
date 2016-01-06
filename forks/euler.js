@@ -1,4 +1,5 @@
-Quaternion = require("three").Quaternion
+var THREE = require('three');
+var Quaternion = THREE.Quaternion
 
 /**
  * @author mrdoob / http://mrdoob.com/
@@ -6,7 +7,7 @@ Quaternion = require("three").Quaternion
  * @author bhouston / http://exocortex.com
  */
 
-Euler = function ( x, y, z, order ) {
+var Euler = function ( x, y, z, order ) {
 
   this._x = x || 0;
   this._y = y || 0;
@@ -18,8 +19,16 @@ Euler.RotationOrders = [ 'XYZ', 'YZX', 'ZXY', 'XZY', 'YXZ', 'ZYX' ];
 
 Euler.DefaultOrder = 'XYZ';
 
-Euler.fromString = function(value){
-  var v = (new Euler).fromArray(value.split(' ').map(parseFloat));
+Euler.fromString = function (value) {
+  function parseRadianOrDegrees (x) {
+    if (x.match(/(d|deg)$/i)) {
+      return THREE.Math.degToRad(parseFloat(x));
+    } else {
+      return parseFloat(x);
+    }
+  }
+
+  var v = (new Euler).fromArray(value.split(' ').map(parseRadianOrDegrees));
 
   if(isFinite(v.x) && isFinite(v.y) && isFinite(v.z)){
   }else{

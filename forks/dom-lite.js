@@ -138,8 +138,24 @@ Node.prototype = {
     Object.observe(this, this.markAsDirty.bind(this));
   },
   markAsDirty: function(){
-    if (this.uuid && this.ownerDocument) {
-      this.ownerDocument.markAsDirty(this);
+    var el = this;
+
+    if (el.nodeName === 'scene') {
+      // do nothing
+      return;
+    }
+
+    while ((el.parentNode) && (el.parentNode.nodeName !== 'scene')) {
+      el = el.parentNode;
+    }
+
+    if (!el.parentNode) {
+      // detached node - do nothing
+      return;
+    }
+
+    if (el.uuid && el.ownerDocument) {
+      el.ownerDocument.markAsDirty(el);
     }
   },
   hasChildNodes: function() {

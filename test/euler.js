@@ -50,5 +50,20 @@ test('Euler', function (t) {
     t.end();
   });
 
+  test('should parse degrees', function (t) {
+    var v;
+    v = Euler.fromString('90deg 180d 270Deg');
+    t.equal(v.x, Math.PI / 2, 'x');
+    t.equal(v.y, Math.PI, 'y');
+    t.equal(v.z, Math.PI * 3 / 2, 'z');
+
+    v = Euler.fromString('45d 0 2');
+    t.equal(v.x, Math.PI / 4, 'x');
+    t.equal(v.y, 0, 'y');
+    t.equal(v.z, 2, 'z');
+
+    t.end();
+  });
+
   t.end();
 });

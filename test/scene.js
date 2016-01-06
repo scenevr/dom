@@ -3,6 +3,7 @@ var SceneDOM = require('../').setLoader(require('../lib/document-fs-loader'));
 var Scene = require('../elements/scene');
 var Script = require('../elements/script');
 var Box = require('../elements/box');
+var Group = require('../elements/group');
 var Voxel = require('../elements/voxel');
 var Plane = require('../elements/plane');
 var Spawn = require('../elements/spawn');
@@ -155,6 +156,18 @@ test('should parse voxel', function (t) {
 
   t.equal(scene.getElementsByTagName('voxel').length, 1);
   t.ok(scene.getElementsByTagName('voxel')[0] instanceof Voxel);
+  t.end();
+});
+
+test('should parse group', function (t) {
+  var scene = sceneFixtureLoader('all_tags.xml');
+  t.equal(scene.getElementsByTagName('group').length, 1);
+
+  var group = scene.getElementsByTagName('group')[0];
+  t.ok(group instanceof Group);
+  t.equal(group.getElementsByTagName('box').length, 2);
+  t.equal(group.getElementsByTagName('box')[0].position.x, 1);
+
   t.end();
 });
 
