@@ -5,6 +5,7 @@ var Script = require('../elements/script');
 var Box = require('../elements/box');
 var Group = require('../elements/group');
 var Voxel = require('../elements/voxel');
+var Text = require('../elements/text');
 var Plane = require('../elements/plane');
 var Spawn = require('../elements/spawn');
 var Model = require('../elements/model');
@@ -159,12 +160,21 @@ test('should parse voxel', function (t) {
   t.end();
 });
 
+test('should parse text', function (t) {
+  var scene = sceneFixtureLoader('all_tags.xml');
+
+  t.equal(scene.getElementsByTagName('text').length, 1);
+  t.ok(scene.getElementsByTagName('text')[0] instanceof Text);
+  t.end();
+});
+
 test('should parse group', function (t) {
   var scene = sceneFixtureLoader('all_tags.xml');
   t.equal(scene.getElementsByTagName('group').length, 1);
 
   var group = scene.getElementsByTagName('group')[0];
   t.ok(group instanceof Group);
+  t.equal(group.rotation.y, Math.PI / 2);
   t.equal(group.getElementsByTagName('box').length, 2);
   t.equal(group.getElementsByTagName('box')[0].position.x, 1);
 

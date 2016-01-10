@@ -110,18 +110,10 @@ Element.createEulerProperty = function (attrName, defaultValue) {
       return this[privateProperty];
     },
     set: function (value) {
-      var v;
-
       if (value instanceof Euler) {
         this[privateProperty] = new Euler().copy(value);
       } else if (typeof value === 'string') {
-        v = new Euler().fromArray(value.split(' ').map(parseFloat));
-
-        if (isFinite(v.x) && isFinite(v.y) && isFinite(v.z)) {
-          this[privateProperty] = v;
-        } else {
-          throw new Error('Invalid ' + attrName + ' argument');
-        }
+        this[privateProperty] = Euler.fromString(value);
       } else {
         throw new Error('Invalid ' + attrName + ' argument');
       }
