@@ -1,5 +1,5 @@
-Quaternion = require("three").Quaternion
-THREE = require("three")
+Quaternion = require("three.js").Quaternion
+THREE = require("three.js")
 
 /**
  * @author mrdoob / http://mrdoob.com/

@@ -15,7 +15,7 @@
     "ao-mesher": "^0.2.10",
     "htmlparser2": "^3.8.2",
     "ndarray": "^1.0.18",
-    "three": "0.66.2",
+    "three.js": "0.73.0",
     "underscore": "~1.7.0",
     "uuid": "~2.0.1",
     "voxel-crunch": "^0.2.1",
