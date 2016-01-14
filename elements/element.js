@@ -59,18 +59,10 @@ Element.createVectorProperty = function (attrName, defaultValue) {
       return this[privateProperty];
     },
     set: function (value) {
-      var v;
-
       if (value instanceof Vector) {
         this[privateProperty] = new Vector().copy(value);
       } else if (typeof value === 'string') {
-        v = new Vector().fromArray(value.split(' ').map(parseFloat));
-
-        if (isFinite(v.length())) {
-          this[privateProperty] = v;
-        } else {
-          throw new Error('Invalid ' + attrName + ' argument');
-        }
+        this[privateProperty] = Vector.fromString(value);
       } else {
         throw new Error('Invalid ' + attrName + ' argument');
       }

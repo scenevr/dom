@@ -49,7 +49,14 @@ Vector = function ( x, y, z ) {
 };
 
 Vector.fromString = function(value){
-  var v = (new Vector).fromArray(value.split(' ').map(parseFloat));
+  var v;
+
+  if (value.split(' ').length === 1) {
+    var n = parseFloat(value);
+    v = new Vector(n, n, n);
+  } else {
+    v = (new Vector).fromArray(value.split(' ').map(parseFloat));
+  }
 
   if(!isFinite(v.length())){
     throw "Invalid argument";
