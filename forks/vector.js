@@ -1,5 +1,5 @@
-Quaternion = require("three.js").Quaternion
-THREE = require("three.js")
+var Quaternion = require("three").Quaternion;
+var THREE = require("three");
 
 /**
  * @author mrdoob / http://mrdoob.com/

@@ -1,7 +1,7 @@
 // For three...
 global.self = {};
 
-var THREE = require('three.js');
+var THREE = require('three');
 var Quaternion = THREE.Quaternion
 
 /**
